@@ -6,7 +6,11 @@ import { Route } from "./interface/route";
 import { healthCheck } from "./routes/health-check";
 
 export const createServer = (fastify: any): FastifyServer => {
-  return fastify({ logger: true });
+  const config: any = {};
+  if (process.env.NODE_ENV !== "test") {
+    config.logger = true;
+  }
+  return fastify(config);
 };
 
 export const registerPlugins = (server: FastifyServer) => {
