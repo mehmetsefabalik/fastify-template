@@ -11,6 +11,8 @@
     "jest",
     "eslint"
   ],
+  "repository": "https://github.com/mehmetsefabalik/fastify-template",
+  "license": "UNLICENSED",
   "scripts": {
     "build:dev": "tsc --watch",
     "build": "tsc",
