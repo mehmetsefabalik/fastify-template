@@ -1,0 +1,28 @@
+{
+  "name": "fastify-boilerplate",
+  "version": "1.0.0",
+  "description": "fastify boilerplate",
+  "private": true,
+  "scripts": {
+    "build:dev": "tsc --watch",
+    "build": "tsc",
+    "start:dev": "NODE_ENV=development nodemon ./dist/index",
+    "start": "NODE_ENV=production node ./dist/index",
+    "test": "npx jest",
+    "cov": "npx jest --collect-coverage"
+  },
+  "keywords": [
+    "fastify",
+    "starter",
+    "boilerplate"
+  ],
+  "author": "mehmetsefabalik@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^3.3.0",
+    "fastify-env": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.6.1"
+  }
+}
