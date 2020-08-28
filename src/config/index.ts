@@ -1,11 +1,7 @@
-import { Server } from "http";
-
 const schema = {
   type: "object",
-  required: [
-  ],
-  properties: {
-  },
+  required: [],
+  properties: {},
 };
 
 export const getOptions = () => {

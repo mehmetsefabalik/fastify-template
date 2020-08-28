@@ -1,4 +1,4 @@
-import { FastifyServer } from "../interface";
+import { FastifyServer } from "../interface/server";
 
 export const healthCheck = (server: FastifyServer) => {
   server.get(

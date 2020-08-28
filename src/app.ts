@@ -1,6 +1,7 @@
-import fastifyEnv from "fastify-env"
+import fastifyEnv from "fastify-env";
 import { getOptions } from "./config";
-import { FastifyServer } from "./interface";
+import { FastifyServer } from "./interface/server";
+import { Route } from "./interface/route";
 
 import { healthCheck } from "./routes/health-check";
 
@@ -20,7 +21,7 @@ export const registerPlugins = (server: FastifyServer) => {
 };
 
 export const registerRoutes = (server: FastifyServer) => {
-  const routes: Array<Function> = [healthCheck];
+  const routes: Array<Route> = [healthCheck];
   routes.forEach((route) => route(server));
 };
 
@@ -30,6 +31,5 @@ export const run = (server: FastifyServer) => {
       server.log.error(err);
       process.exit(1);
     }
-    const address = server!.server!.address();
   });
 };

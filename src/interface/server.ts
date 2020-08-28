@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { Server, IncomingMessage, ServerResponse } from "http";
 
 export interface ServerConfig {
-
+  NODE_ENV: string;
 }
 
 export interface FastifyServer
