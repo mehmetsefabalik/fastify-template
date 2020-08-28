@@ -1,6 +1,6 @@
 import sinon from "sinon";
 import * as App from "../../src/app";
-import { setupCustomStubs, setupEnvVars } from "../util";
+import { setupCustomStubs, setupEnvVars } from "../../test/util";
 
 const sandbox = sinon.createSandbox();
 

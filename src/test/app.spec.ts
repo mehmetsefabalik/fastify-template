@@ -1,7 +1,7 @@
 import sinon from "sinon";
 import faker from "faker";
-import { createServer } from "../../src/app";
-import { setupCustomStubs, setupEnvVars } from "../util";
+import { createServer } from "../app";
+import { setupCustomStubs, setupEnvVars } from "../../test/util";
 
 const sandbox = sinon.createSandbox();
 const {
