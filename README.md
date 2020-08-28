@@ -9,7 +9,7 @@ Includes:
 - Linting: Eslint
 - Containerization: Docker
 
-## How to run
+## Zero to Hero
 
 `npm i && npm run build && npm run start`
 
