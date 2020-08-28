@@ -1,12 +1,15 @@
 {
-  "name": "fastify-boilerplate",
+  "name": "fastify-template",
   "version": "1.0.0",
-  "description": "fastify boilerplate",
+  "description": "minimal fastify template",
   "author": "mehmetsefabalik@gmail.com",
   "keywords": [
     "fastify",
     "starter",
-    "boilerplate"
+    "boilerplate",
+    "typescript",
+    "jest",
+    "eslint"
   ],
   "scripts": {
     "build:dev": "tsc --watch",
