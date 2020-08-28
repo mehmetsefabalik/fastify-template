@@ -37,5 +37,5 @@ Run `npm run test` to test your project.
 
 Run `npm run lint` to lint your files;
 
-> Husky's pre-add and pre-push hooks are used. So when you run `git add <file>`, it succeeds if `npm run lint` succeeds. When you run `git push origin <branch>` it succeeds if `npm run test` succeeds.
+> Husky's pre-commit and pre-push hooks are used. So when you run `git commit`, it succeeds if `npm run lint` succeeds. When you run `git push origin <branch>` it succeeds if `npm run test` succeeds.
 
