@@ -1,10 +1,3 @@
-import * as App from "./app";
-import fastify from "fastify";
+import { getServer, start } from "./app";
 
-const server = App.createServer(fastify);
-
-App.registerPlugins(server);
-
-App.registerRoutes(server);
-
-App.run(server);
+start(getServer());

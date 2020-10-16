@@ -9,21 +9,16 @@ describe("index Server Unit Tests", () => {
     setupCustomStubs(sandbox);
     setupEnvVars();
   });
+
   afterEach(() => {
     sandbox.verifyAndRestore();
   });
 
-  it("should", () => {
-    // Arrange
-    const appMock = sandbox.mock(App);
-    appMock.expects("createServer");
-    appMock.expects("registerRoutes");
-    appMock.expects("registerPlugins");
-    appMock.expects("run");
+  it("should call start and function with parameter getServer", () => {
+    const mock = sandbox.mock(App);
+    mock.expects("start");
+    mock.expects("getServer");
 
-    // Act
-    require("../../src/index");
-
-    // Assert
+    require("../index");
   });
 });
