@@ -1,9 +1,8 @@
 import request from "supertest";
-import fastify from "fastify";
-import * as App from "../../src/app";
 import { FastifyServer } from "../../src/interface/server";
 import sinon from "sinon";
 import { setupCustomStubs, setupEnvVars, ready } from "../util";
+import { getServer, start } from "../../src/app";
 
 const sandbox = sinon.createSandbox();
 
@@ -13,9 +12,8 @@ describe("POST /ready Integration Tests", () => {
   describe("server.upAndRunning is true", () => {
     beforeAll(async (done) => {
       setupEnvVars();
-      server = App.createServer(fastify);
-      App.registerPlugins(server);
-      App.registerRoutes(server);
+      server = getServer();
+      await start(server);
       await ready(server, request, done);
     });
 
