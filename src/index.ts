@@ -1,3 +1,10 @@
-import { getServer, start } from "./app";
+import "reflect-metadata";
+import fastify from "fastify";
+import { Application } from "./application";
+import { createServer } from "./server";
 
-start(getServer());
+(async function () {
+  const application = new Application(createServer(fastify));
+  await application.init();
+  await application.run();
+})();

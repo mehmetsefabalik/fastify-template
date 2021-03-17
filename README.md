@@ -4,6 +4,8 @@ Minimal API boilerplate that you can develop your project on. Just click `Use Th
 
 Includes:
 - Web Framework: Fastify
+- Database: MongoDB
+- Database Adaptor: Mongoose
 - Static Typing: Typescript
 - Testing: Jest
 - Linting: Eslint
@@ -23,6 +25,8 @@ Run `npm run build:dev` for development build, it watches ts files and transpile
 ## How to run
 
 After building your project,
+
+Add `production.env` file to your root folder and put environment variables in it.
 
 Run `npm run start` for production;
 Run `npm run start:dev` for development, it watched js files and restarts server whenever there is a change;

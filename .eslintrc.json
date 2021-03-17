@@ -39,7 +39,10 @@
       }
     ],
     "jest/lowercase-name": "off",
-    "@typescript-eslint/no-empty-function": "warn"
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-useless-constructor": "off",
+    "camelcase": "off"
   },
   "ignorePatterns": [
     "dist",
