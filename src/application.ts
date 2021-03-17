@@ -1,12 +1,15 @@
 import fastifyEnv from "fastify-env";
+import Mongoose from "mongoose";
+import fastifyStatic from "fastify-static";
+import path from "path";
 import { getOptions } from "./config";
 import { FastifyServer } from "./interface/server";
 import { Route } from "./interface/route";
+import { decorateManagers } from "./ioc";
 
 import { healthCheck } from "./routes/health-check";
 import { userRoutes } from "./routes/user";
-import { decorateManagers } from "./ioc";
-import Mongoose from "mongoose";
+import { staticRoutes } from "./routes/static";
 
 export class Application {
   private db: typeof Mongoose | null = null;
@@ -25,10 +28,14 @@ export class Application {
       }
       console.log("Configuration: ", this.server.config);
     });
+    this.server.register(fastifyStatic, {
+      root: path.join(__dirname, "../public"),
+      serve: false,
+    });
   }
 
   private registerRoutes() {
-    const routes: Array<Route> = [healthCheck, userRoutes];
+    const routes: Array<Route> = [healthCheck, userRoutes, staticRoutes];
     routes.forEach((route) => route(this.server));
   }
 
@@ -69,7 +76,7 @@ export class Application {
   }
 
   public run() {
-    this.server.listen(5047, "0.0.0.0", async (err: any) => {
+    this.server.listen(5047, "0.0.0.0", async (err: Error) => {
       if (err) {
         await this.disconnect();
         console.error(err);
