@@ -6,6 +6,6 @@ COPY ./node_modules ./node_modules
 COPY ./dist ./dist
 COPY ./package.json ./package.json
 
-EXPOSE 3002
+EXPOSE 5050
 
 CMD ["npm", "run", "start"]

@@ -11,8 +11,34 @@ import { healthCheck } from "./routes/health-check";
 import { userRoutes } from "./routes/user";
 import { staticRoutes } from "./routes/static";
 
+function connect(
+  dbUrl: string,
+  onSuccess: () => void,
+  onError: (dbUrl: string, onSuccess: () => void, onError: any) => void
+) {
+  return Mongoose.connect(
+    dbUrl,
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    },
+    function (err) {
+      if (err) {
+        console.error(
+          "Failed to connect to mongo on startup - retrying in 5 sec",
+          err
+        );
+        setTimeout(() => onError(dbUrl, onSuccess, onError), 5000);
+      } else {
+        onSuccess();
+      }
+    }
+  );
+}
+
 export class Application {
-  private db: typeof Mongoose | null = null;
   constructor(private readonly server: FastifyServer) {}
 
   private registerDecorators() {
@@ -39,23 +65,16 @@ export class Application {
     routes.forEach((route) => route(this.server));
   }
 
-  private async connect() {
-    const db = await Mongoose.connect(this.server.config.DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
+  private async connect(): Promise<typeof Mongoose> {
+    const dbUrl = this.server.config.DB_URL;
+
+    return new Promise((resolve) => {
+      return connect(dbUrl, resolve, connect);
     });
-    this.db = db;
   }
 
   public async disconnect() {
-    if (this.db) {
-      await this.db.disconnect();
-    } else {
-      this.server.log.warn(
-        "called application.disconnect but db connection is not established"
-      );
-    }
+    await Mongoose.disconnect();
   }
 
   public async init() {
@@ -66,17 +85,12 @@ export class Application {
     this.registerRoutes();
     this.server.log.info("registered routes");
     await this.server.ready();
-    try {
-      await this.connect();
-    } catch (e) {
-      this.server.log.error("Error while connecting to db, ", e);
-      throw new Error();
-    }
+    await this.connect();
     this.server.log.info("connected to db");
   }
 
   public run() {
-    this.server.listen(5047, "0.0.0.0", async (err: Error) => {
+    this.server.listen(5050, "0.0.0.0", async (err: Error) => {
       if (err) {
         await this.disconnect();
         console.error(err);
