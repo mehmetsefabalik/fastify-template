@@ -4,7 +4,7 @@ interface Query {
   name: string;
 }
 
-export default function userRoutes(server: FastifyServer) {
+export default function routes(server: FastifyServer) {
   server.get<{ Querystring: Query }>(
     "/users",
     {
