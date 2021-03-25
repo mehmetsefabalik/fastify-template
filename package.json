@@ -28,12 +28,14 @@
     "fastify": "^3.3.0",
     "fastify-env": "^2.0.1",
     "fastify-static": "^3.2.1",
+    "glob": "^7.1.6",
     "mongoose": "^5.10.2",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.4.0"
   },
   "devDependencies": {
     "@types/faker": "^4.1.10",
+    "@types/glob": "^7.1.3",
     "@types/jest": "^26.0",
     "@types/mongoose": "^5.7.36",
     "@types/node": "^14.6.1",

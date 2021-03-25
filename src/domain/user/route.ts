@@ -1,10 +1,10 @@
-import { FastifyServer } from "../interface/server";
+import { FastifyServer } from "../../interface/server";
 
 interface Query {
   name: string;
 }
 
-export const userRoutes = (server: FastifyServer) => {
+export default function userRoutes(server: FastifyServer) {
   server.get<{ Querystring: Query }>(
     "/users",
     {
@@ -32,4 +32,4 @@ export const userRoutes = (server: FastifyServer) => {
       }
     }
   );
-};
+}

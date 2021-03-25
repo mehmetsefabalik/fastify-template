@@ -2,13 +2,13 @@ import fastifyEnv from "fastify-env";
 import Mongoose from "mongoose";
 import fastifyStatic from "fastify-static";
 import path from "path";
+import glob from "glob";
 import { getOptions } from "./config";
 import { FastifyServer } from "./interface/server";
 import { Route } from "./interface/route";
 import { decorateManagers } from "./ioc";
 
 import { healthCheck } from "./routes/health-check";
-import { userRoutes } from "./routes/user";
 import { staticRoutes } from "./routes/static";
 
 function connect(
@@ -38,6 +38,18 @@ function connect(
   );
 }
 
+async function getDomainRoutes(): Promise<Array<string>> {
+  return new Promise((resolve, reject) => {
+    glob(path.join(__dirname, "./domain/*/route.*"), {}, (err, files) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(files);
+      }
+    });
+  });
+}
+
 export class Application {
   constructor(private readonly server: FastifyServer) {}
 
@@ -60,8 +72,13 @@ export class Application {
     });
   }
 
-  private registerRoutes() {
-    const routes: Array<Route> = [healthCheck, userRoutes, staticRoutes];
+  private async registerRoutes() {
+    const domainPaths = await getDomainRoutes();
+    const domainRoutes: Array<Route> = [];
+    for (let i = 0; i < domainPaths.length; i++) {
+      domainRoutes.push((await import(domainPaths[i])).default);
+    }
+    const routes: Array<Route> = [healthCheck, staticRoutes, ...domainRoutes];
     routes.forEach((route) => route(this.server));
   }
 
@@ -69,7 +86,7 @@ export class Application {
     const dbUrl = this.server.config.DB_URL;
 
     return new Promise((resolve) => {
-      return connect(dbUrl, resolve, connect);
+      return connect(dbUrl, resolve as () => void, connect);
     });
   }
 
@@ -78,12 +95,12 @@ export class Application {
   }
 
   public async init() {
+    await this.registerRoutes();
+    this.server.log.info("registered routes");
     this.registerPlugins();
-    this.server.log.info("waiting server to be ready");
+    this.server.log.info("registered plugins");
     this.registerDecorators();
     this.server.log.info("registered decorators");
-    this.registerRoutes();
-    this.server.log.info("registered routes");
     await this.server.ready();
     await this.connect();
     this.server.log.info("connected to db");
