@@ -53,12 +53,12 @@ async function getDomainRoutes(): Promise<Array<string>> {
 export class Application {
   constructor(private readonly server: FastifyServer) {}
 
-  private registerDecorators() {
-    decorateManagers(this.server);
+  private async registerDecorators() {
+    await decorateManagers(this.server);
     this.server.decorate("upAndRunning", true);
   }
 
-  private registerPlugins() {
+  private async registerPlugins() {
     this.server.register(fastifyEnv, getOptions()).ready((err) => {
       if (err) {
         console.error(`Error while registering fastifyEnv: ${err}`);
@@ -97,10 +97,10 @@ export class Application {
   public async init() {
     await this.registerRoutes();
     this.server.log.info("registered routes");
-    this.registerPlugins();
-    this.server.log.info("registered plugins");
-    this.registerDecorators();
+    await this.registerDecorators();
     this.server.log.info("registered decorators");
+    await this.registerPlugins();
+    this.server.log.info("registered plugins");
     await this.server.ready();
     await this.connect();
     this.server.log.info("connected to db");
