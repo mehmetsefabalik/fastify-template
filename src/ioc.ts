@@ -1,20 +1,13 @@
 import { FastifyServer } from "./interface/server";
 import { container } from "tsyringe";
 
-import { sanitize } from "./util";
+import { sanitize } from "./util/sanitize";
 
-import User from "./domain/user";
-import { Manager } from "./manager";
+import * as Ad from "./domain/user";
 
 const modules: Array<{
-  name: string;
-  value: { Manager: any; registerDependencies: () => void };
-}> = [
-  {
-    name: "userManager",
-    value: User,
-  },
-];
+  registerManager: (decorate: any) => void;
+}> = [Ad];
 
 export async function decorateManagers(server: FastifyServer) {
   container.register<typeof server.log>("Logger", { useValue: server.log });
@@ -23,10 +16,8 @@ export async function decorateManagers(server: FastifyServer) {
   });
 
   for (const module of modules) {
-    module.value.registerDependencies();
-  }
-
-  for (const module of modules) {
-    server.decorate(module.name, container.resolve(module.value.Manager));
+    module.registerManager((name: string, manager: any) => {
+      server.decorate(name, container.resolve(manager));
+    });
   }
 }

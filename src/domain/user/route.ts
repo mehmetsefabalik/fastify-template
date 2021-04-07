@@ -27,7 +27,8 @@ export default function routes(server: FastifyServer) {
           return reply.code(404).send();
         }
       } catch (e) {
-        server.log.error("GET_USER_ERROR: ", e);
+        server.log.error("GET_USER_ERROR: ");
+        server.log.error(e);
         return reply.code(500).send({});
       }
     }

@@ -1,9 +1,7 @@
 import Manager from "./manager";
-import { UserModel } from "./model";
-import { container } from "tsyringe";
 
-function registerDependencies() {
-  container.register<typeof UserModel>("UserModel", { useValue: UserModel });
+export function registerManager(
+  decorator: (name: string, manager: any) => void
+) {
+  decorator("userManager", Manager);
 }
-
-export default { Manager, registerDependencies };
