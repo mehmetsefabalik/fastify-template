@@ -19,10 +19,11 @@ function connect(
   return Mongoose.connect(
     dbUrl,
     {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
+      autoIndex: false, // Don't build indexes
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      family: 4, // Use IPv4, skip trying IPv6
     },
     function (err) {
       if (err) {
@@ -107,12 +108,16 @@ export class Application {
   }
 
   public run() {
-    this.server.listen(5050, "0.0.0.0", async (err: Error) => {
-      if (err) {
-        await this.disconnect();
-        console.error(err);
-        process.exit(1);
+    this.server.listen(
+      5050,
+      "0.0.0.0",
+      async (err: Error | null, address: string) => {
+        if (err) {
+          await this.disconnect();
+          console.error(err);
+          process.exit(1);
+        }
       }
-    });
+    );
   }
 }

@@ -1,12 +1,10 @@
 import request from "supertest";
 import fastify from "fastify";
 import { FastifyServer } from "../../src/interface/server";
-import sinon from "sinon";
 import { setupCustomStubs, setupEnvVars, ready } from "../util";
 import { createServer } from "../../src/server";
 import { Application } from "../../src/application";
 
-const sandbox = sinon.createSandbox();
 
 describe("POST /ready Integration Tests", () => {
   let application: Application;
@@ -27,11 +25,7 @@ describe("POST /ready Integration Tests", () => {
     });
 
     beforeEach(() => {
-      setupCustomStubs(sandbox);
-    });
-
-    afterEach(() => {
-      sandbox.verifyAndRestore();
+      setupCustomStubs();
     });
 
     it("should return 200", async () => {

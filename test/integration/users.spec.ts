@@ -2,13 +2,10 @@ import request from "supertest";
 import fastify from "fastify";
 import { Application } from "../../src/application";
 import { FastifyServer } from "../../src/interface/server";
-import sinon from "sinon";
 import faker from "faker";
 import { setupCustomStubs, setupEnvVars, ready } from "../util";
 import { createUsers, deleteUsers } from "../helper/user-service";
 import { createServer } from "../../src/server";
-
-const sandbox = sinon.createSandbox();
 
 async function sideEffects(name: string) {
   await createUsers([name]);
@@ -42,11 +39,7 @@ describe("GET /users?name={name} Unit Tests", () => {
   });
 
   beforeEach(() => {
-    setupCustomStubs(sandbox);
-  });
-
-  afterEach(() => {
-    sandbox.verifyAndRestore();
+    setupCustomStubs();
   });
 
   it("should return 400 without query param", async () => {
@@ -66,7 +59,10 @@ describe("GET /users?name={name} Unit Tests", () => {
 
   it("should return 500", async () => {
     const temp = server.userManager.findByName;
-    server.userManager.findByName = sandbox.stub().throws();
+    jest
+      .spyOn(server.userManager, "findByName")
+      .mockImplementation()
+      .mockRejectedValue(new Error());
 
     await request(server.server).get(`/users?name=${name}`).expect(500);
 

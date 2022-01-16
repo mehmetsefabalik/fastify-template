@@ -4,10 +4,10 @@ export const setupEnvVars = () => {
 };
 
 /* istanbul ignore next */
-export const setupCustomStubs = (sandbox: any) => {
-  sandbox.stub(console, "log");
-  sandbox.stub(console, "warn");
-  sandbox.stub(console, "error");
+export const setupCustomStubs = () => {
+  jest.spyOn(console, "log").mockImplementation(() => {});
+  jest.spyOn(console, "warn").mockImplementation(() => {});
+  jest.spyOn(console, "error").mockImplementation(() => {});
 };
 
 /* istanbul ignore next */
