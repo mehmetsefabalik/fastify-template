@@ -13,7 +13,7 @@ Includes:
 
 ## Zero to Hero
 
-`npm i && npm run build && npm run start`
+`npm i && npm run dev`
 
 ## How to build
 
